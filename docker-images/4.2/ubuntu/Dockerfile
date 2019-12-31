@@ -60,7 +60,7 @@ ARG         OPUS_SHA256SUM="77db45a87b51578fbc49555ef1b10926179861d854eb2613207d
 ARG         THEORA_SHA256SUM="40952956c47811928d1e7922cda3bc1f427eb75680c3c37249c91e949054916b libtheora-1.1.1.tar.gz"
 ARG         VORBIS_SHA256SUM="6efbcecdd3e5dfbf090341b485da9d176eb250d893e3eb378c428a2db38301ce libvorbis-1.3.5.tar.gz"
 ARG         XVID_SHA256SUM="4e9fd62728885855bc5007fe1be58df42e5e274497591fec37249e1052ae316f xvidcore-1.3.4.tar.gz"
-
+ARG         DEBIAN_FRONTEND=noninteractive
 
 
 RUN      buildDeps="autoconf \
@@ -86,6 +86,18 @@ RUN      buildDeps="autoconf \
                     zlib1g-dev" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
+## SRT https://github.com/Haivision/srt
+RUN \
+        DIR=/tmp/srt && \
+        mkdir -p ${DIR} && \
+        cd ${DIR} && \
+        curl -sLO https://github.com/Haivision/srt/archive/v${SRT_VERSION}.tar.gz &&\
+        tar -zx --strip-components=1 -f v${SRT_VERSION}.tar.gz && \
+        ./configure -prefix="${PREFIX}" && \
+        make && \
+        make install && \
+        rm -rf ${DIR}
+
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
 RUN \
         DIR=/tmp/opencore-amr && \
@@ -335,18 +347,6 @@ RUN \
         cd ${DIR} && \
         curl -sLO https://www.x.org/archive//individual/util/util-macros-${XORG_MACROS_VERSION}.tar.gz &&\
         tar -zx --strip-components=1 -f util-macros-${XORG_MACROS_VERSION}.tar.gz && \
-        ./configure -prefix="${PREFIX}" && \
-        make && \
-        make install && \
-        rm -rf ${DIR}
-
-## SRT https://github.com/Haivision/srt
-RUN \
-        DIR=/tmp/srt && \
-        mkdir -p ${DIR} && \
-        cd ${DIR} && \
-        curl -sLO https://github.com/Haivision/srt/archive/v${SRT_VERSION}.tar.gz &&\
-        tar -zx --strip-components=1 -f v${SRT_VERSION}.tar.gz && \
         ./configure -prefix="${PREFIX}" && \
         make && \
         make install && \
