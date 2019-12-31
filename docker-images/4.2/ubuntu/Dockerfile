@@ -48,6 +48,7 @@ ENV         FFMPEG_VERSION=4.2.1 \
             XORG_MACROS_VERSION=1.19.2 \
             XPROTO_VERSION=7.0.31 \
             XVID_VERSION=1.3.4 \
+            SRT_VERSION=1.4.1 \
             SRC=/usr/local
 
 ARG         FREETYPE_SHA256SUM="5d03dd76c2171a7601e9ce10551d52d4471cf92cd205948e60289251daddffa8 freetype-2.5.5.tar.gz"
@@ -80,6 +81,8 @@ RUN      buildDeps="autoconf \
                     python \
                     libssl-dev \
                     yasm \
+                    tclsh \
+                    build-essential \
                     zlib1g-dev" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
@@ -337,6 +340,18 @@ RUN \
         make install && \
         rm -rf ${DIR}
 
+## SRT https://github.com/Haivision/srt
+RUN \
+        DIR=/tmp/srt && \
+        mkdir -p ${DIR} && \
+        cd ${DIR} && \
+        curl -sLO https://github.com/Haivision/srt/archive/v${SRT_VERSION}.tar.gz &&\
+        tar -zx --strip-components=1 -f v${SRT_VERSION}.tar.gz && \
+        ./configure -prefix="${PREFIX}" && \
+        make && \
+        make install && \
+        rm -rf ${DIR}
+
 RUN \
         DIR=/tmp/xproto && \
         mkdir -p ${DIR} && \
@@ -427,6 +442,7 @@ RUN \
         --enable-libx265 \
         --enable-libxvid \
         --enable-libx264 \
+        --enable-libsrt \
         --enable-nonfree \
         --enable-openssl \
         --enable-libfdk_aac \
