@@ -93,7 +93,7 @@ RUN \
         cd ${DIR} && \
         curl -sLO https://github.com/Haivision/srt/archive/v${SRT_VERSION}.tar.gz &&\
         tar -zx --strip-components=1 -f v${SRT_VERSION}.tar.gz && \
-        ./configure -prefix="${PREFIX}" && \
+        ./configure --prefix="${PREFIX}" --enable-shared && \
         make && \
         make install && \
         rm -rf ${DIR}

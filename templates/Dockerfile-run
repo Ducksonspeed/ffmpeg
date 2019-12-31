@@ -1,3 +1,14 @@
+## SRT https://github.com/Haivision/srt
+RUN \
+        DIR=/tmp/srt && \
+        mkdir -p ${DIR} && \
+        cd ${DIR} && \
+        curl -sLO https://github.com/Haivision/srt/archive/v${SRT_VERSION}.tar.gz &&\
+        tar -zx --strip-components=1 -f v${SRT_VERSION}.tar.gz && \
+        ./configure --prefix="${PREFIX}" --enable-shared && \
+        make && \
+        make install && \
+        rm -rf ${DIR}
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
 RUN \
         DIR=/tmp/opencore-amr && \
@@ -342,6 +353,7 @@ RUN \
         --enable-libx265 \
         --enable-libxvid \
         --enable-libx264 \
+        --enable-libsrt \
         --enable-nonfree \
         --enable-openssl \
         --enable-libfdk_aac \
