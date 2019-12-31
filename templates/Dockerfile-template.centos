@@ -39,6 +39,10 @@ RUN     buildDeps="autoconf \
                    tar \
                    yasm \
                    which \
+                   libdev-ssl \
+                   pkg-config \
+                   tclsh \
+                   build-essential \
                    zlib-devel" && \
         echo "${SRC}/lib" > /etc/ld.so.conf.d/libc.conf && \
         yum --enablerepo=extras install -y epel-release && \

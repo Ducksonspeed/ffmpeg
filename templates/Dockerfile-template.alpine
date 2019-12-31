@@ -41,6 +41,10 @@ RUN     buildDeps="autoconf \
                    yasm \
                    nasm \
                    zlib-dev \
+                   libssl-dev \
+                   tclsh \
+                   build-essential \
+                   pkg-config \
                    expat-dev" && \
         apk  add --no-cache --update ${buildDeps}
 %%RUN%%
