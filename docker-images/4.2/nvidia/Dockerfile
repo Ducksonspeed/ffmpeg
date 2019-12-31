@@ -62,6 +62,7 @@ ENV         FFMPEG_VERSION=4.2.1 \
             XORG_MACROS_VERSION=1.19.2 \
             XPROTO_VERSION=7.0.31 \
             XVID_VERSION=1.3.4 \
+            SRT_VERSION=1.4.1 \
             SRC=/usr/local
 
 ARG         FREETYPE_SHA256SUM="5d03dd76c2171a7601e9ce10551d52d4471cf92cd205948e60289251daddffa8 freetype-2.5.5.tar.gz"
@@ -73,8 +74,7 @@ ARG         OPUS_SHA256SUM="77db45a87b51578fbc49555ef1b10926179861d854eb2613207d
 ARG         THEORA_SHA256SUM="40952956c47811928d1e7922cda3bc1f427eb75680c3c37249c91e949054916b libtheora-1.1.1.tar.gz"
 ARG         VORBIS_SHA256SUM="6efbcecdd3e5dfbf090341b485da9d176eb250d893e3eb378c428a2db38301ce libvorbis-1.3.5.tar.gz"
 ARG         XVID_SHA256SUM="4e9fd62728885855bc5007fe1be58df42e5e274497591fec37249e1052ae316f xvidcore-1.3.4.tar.gz"
-
-
+ARG         DEBIAN_FRONTEND=noninteractive
 
 RUN      buildDeps="autoconf \
                     automake \
@@ -94,6 +94,8 @@ RUN      buildDeps="autoconf \
                     python \
                     libssl-dev \
                     yasm \
+                    tclsh \
+                    build-essential \
                     zlib1g-dev" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
@@ -108,6 +110,17 @@ RUN \
 	make install  && \
     rm -rf ${DIR}
 
+## SRT https://github.com/Haivision/srt
+RUN \
+        DIR=/tmp/srt && \
+        mkdir -p ${DIR} && \
+        cd ${DIR} && \
+        curl -sLO https://github.com/Haivision/srt/archive/v${SRT_VERSION}.tar.gz &&\
+        tar -zx --strip-components=1 -f v${SRT_VERSION}.tar.gz && \
+        ./configure --prefix="${PREFIX}" --enable-shared && \
+        make && \
+        make install && \
+        rm -rf ${DIR}
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
 RUN \
         DIR=/tmp/opencore-amr && \
@@ -456,6 +469,7 @@ RUN \
         --enable-libx265 \
         --enable-libxvid \
         --enable-libx264 \
+        --enable-libsrt \
         --enable-nonfree \
         --enable-openssl \
         --enable-libfdk_aac \

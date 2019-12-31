@@ -82,22 +82,22 @@ jobs:
       4_0_5_nvidia:
         VERSION: 4.0
         VARIANT: nvidia
-      3_4_6_ubuntu:
+      3_4_7_ubuntu:
         VERSION: 3.4
         VARIANT: ubuntu
-      3_4_6_alpine:
+      3_4_7_alpine:
         VERSION: 3.4
         VARIANT: alpine
-      3_4_6_centos:
+      3_4_7_centos:
         VERSION: 3.4
         VARIANT: centos
-      3_4_6_scratch:
+      3_4_7_scratch:
         VERSION: 3.4
         VARIANT: scratch
-      3_4_6_vaapi:
+      3_4_7_vaapi:
         VERSION: 3.4
         VARIANT: vaapi
-      3_4_6_nvidia:
+      3_4_7_nvidia:
         VERSION: 3.4
         VARIANT: nvidia
       3_3_9_ubuntu:
